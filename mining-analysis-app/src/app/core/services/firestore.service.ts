@@ -66,4 +66,11 @@ export class FirestoreService {
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     }
+
+    async getAll(path: string): Promise<any[]> {
+        const colRef = this.getCollectionRef(path);
+        const q = query(colRef, limit(100));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
 }
