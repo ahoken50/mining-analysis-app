@@ -25,6 +25,25 @@ jobs:
       - name: Install Dependencies
         run: cd mining-analysis-app && npm ci --legacy-peer-deps
 
+      - name: Inject Firebase Config
+        run: |
+          cd mining-analysis-app/src/environments
+          cat > environment.prod.ts << 'EOF'
+          export const environment = {
+              production: true,
+              firebase: {
+                  apiKey: "${{ secrets.FIREBASE_API_KEY }}",
+                  authDomain: "${{ secrets.GCP_PROJECT_ID }}.firebaseapp.com",
+                  projectId: "${{ secrets.GCP_PROJECT_ID }}",
+                  storageBucket: "${{ secrets.GCP_PROJECT_ID }}.appspot.com",
+                  messagingSenderId: "${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}",
+                  appId: "${{ secrets.FIREBASE_APP_ID }}"
+              },
+              googleMapsApiKey: "${{ secrets.GOOGLE_MAPS_API_KEY }}",
+              aiServiceUrl: "https://mining-ai-service-uc.a.run.app"
+          };
+          EOF
+
       - name: Build Angular App
         run: cd mining-analysis-app && npm run build
 
