@@ -69,12 +69,21 @@
             </div>
         </section>
 
+        <!-- Progress Indicator -->
+        <div class="progress-indicator" *ngIf="isSubmitting">
+            <div class="spinner"></div>
+            <div class="progress-text">
+                <p class="current-step">{{ currentStep || 'Création en cours...' }}</p>
+                <p class="upload-progress" *ngIf="uploadProgress">{{ uploadProgress }}</p>
+            </div>
+        </div>
+
         <!-- Actions -->
         <div class="form-actions">
-            <button type="button" class="btn-secondary" routerLink="/dashboard">Annuler</button>
+            <button type="button" class="btn-secondary" routerLink="/dashboard" [disabled]="isSubmitting">Annuler</button>
             <button type="submit" class="btn-primary" [disabled]="projectForm.invalid || isSubmitting">
                 <span *ngIf="!isSubmitting">Créer le dossier</span>
-                <span *ngIf="isSubmitting">Création en cours...</span>
+                <span *ngIf="isSubmitting">En cours...</span>
             </button>
         </div>
 
