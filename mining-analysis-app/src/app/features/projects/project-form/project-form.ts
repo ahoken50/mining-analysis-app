@@ -99,8 +99,18 @@ export class ProjectForm implements OnInit {
         const currentUser = this.authService.getCurrentUser();
 
         if (!currentUser) {
-          console.error('[ProjectForm] ✗ User not authenticated');
-          throw new Error('AUTH_REQUIRED');
+          console.warn('[ProjectForm] ⚠ User not authenticated, redirecting to login');
+          this.toastService.warning('Vous devez être connecté pour créer un dossier');
+
+          // Rediriger vers login avec returnUrl
+          const returnUrl = this.isEditMode ? `/projects/${this.projectId}/edit` : '/projects/new';
+          this.router.navigate(['/login'], {
+            queryParams: { returnUrl }
+          });
+
+          this.isSubmitting = false;
+          this.currentStep = '';
+          return;
         }
         console.log('[ProjectForm] ✓ User authenticated:', currentUser.uid);
 
@@ -241,11 +251,6 @@ export class ProjectForm implements OnInit {
   }
 
   private getErrorMessage(error: any): string {
-    // Erreurs d'authentification
-    if (error?.message === 'AUTH_REQUIRED') {
-      return 'Vous devez être connecté pour créer un dossier';
-    }
-
     // Erreurs Firebase Auth
     if (error?.code?.startsWith('auth/')) {
       return 'Erreur d\'authentification: ' + (error.message || 'Veuillez vous reconnecter');
