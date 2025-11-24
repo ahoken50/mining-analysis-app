@@ -1,11 +1,11 @@
 export interface Project {
     id?: string;
+    status: 'DRAFT' | 'ANALYSIS_PENDING' | 'ANALYZED' | 'APPROVED' | 'REJECTED';
     metadata: {
         title: string;
         sender: string; // 'MINING_CO' | 'MINISTRY'
         receivedDate: Date;
         emailContent: string;
-        status: 'DRAFT' | 'ANALYSIS_PENDING' | 'ANALYZED' | 'APPROVED';
         createdBy: string;
         createdAt: Date;
     };

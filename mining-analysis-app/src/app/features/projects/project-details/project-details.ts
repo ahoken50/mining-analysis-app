@@ -24,7 +24,7 @@ export class ProjectDetails implements OnInit {
 
   project: Project | null = null;
   loading = true;
-  activeTab: 'overview' | 'map' | 'documents' | 'analysis' = 'overview';
+  activeTab: 'overview' | 'map' | 'documents' | 'analysis' | 'history' = 'overview';
 
   private map: L.Map | undefined;
 
@@ -38,6 +38,10 @@ export class ProjectDetails implements OnInit {
   async loadProject(id: string) {
     try {
       this.project = await this.firestoreService.get('projects', id);
+      // Migration/Fallback: Ensure status is at root if it was in metadata
+      if (this.project && !this.project.status && (this.project.metadata as any).status) {
+        this.project.status = (this.project.metadata as any).status;
+      }
     } catch (error) {
       console.error('Error loading project:', error);
     } finally {
@@ -45,7 +49,7 @@ export class ProjectDetails implements OnInit {
     }
   }
 
-  setActiveTab(tab: 'overview' | 'map' | 'documents' | 'analysis') {
+  setActiveTab(tab: 'overview' | 'map' | 'documents' | 'analysis' | 'history') {
     this.activeTab = tab;
     if (tab === 'map') {
       // Delay map init to allow DOM to render
@@ -159,12 +163,12 @@ export class ProjectDetails implements OnInit {
   }
 
   // Validation Workflow
-  async updateStatus(status: 'APPROVED' | 'ANALYSIS_PENDING' | 'DRAFT') {
+  async updateStatus(status: 'APPROVED' | 'ANALYSIS_PENDING' | 'DRAFT' | 'REJECTED') {
     if (!this.project?.id) return;
 
     try {
       await this.firestoreService.update('projects', this.project.id, {
-        'metadata.status': status
+        'status': status
       });
 
       // Add history event
@@ -172,7 +176,7 @@ export class ProjectDetails implements OnInit {
       // For now, we rely on the backend or direct firestore add if needed, 
       // but let's just update the local state and show a toast.
 
-      this.project.metadata.status = status;
+      this.project.status = status;
       this.toastService.show(`Statut mis à jour : ${status}`, 'success');
 
     } catch (error) {
