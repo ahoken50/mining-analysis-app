@@ -1,2 +1,24 @@
 <app-toast></app-toast>
-<router-outlet></router-outlet>
+
+<div class="app-container">
+  <!-- Global Header -->
+  <header class="app-header">
+    <div class="logo">
+      <span class="icon">⛏️</span>
+      <h1>Gestion des MDR</h1>
+    </div>
+    <nav class="main-nav">
+      <a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a>
+      <a routerLink="/projects/new" class="btn-primary">+ Nouveau Dossier</a>
+    </nav>
+    <div class="user-profile">
+      <span class="avatar">AD</span>
+      <span class="role">Administrateur</span>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
