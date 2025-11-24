@@ -1,29 +1,82 @@
 <div class="project-form-container">
-    <h2>Nouveau Dossier ATI</h2>
-    <p class="subtitle">Saisie des informations reçues par courriel</p>
+    <div class="form-header">
+        <h2>Nouveau Dossier ATI</h2>
+        <p class="subtitle">Saisie des informations reçues par courriel</p>
+    </div>
 
-    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="premium-form">
 
-        <!-- Titre du Projet -->
-        <div class="form-group">
-            <label for="title">Nom du Projet / Dossier</label>
-            <input id="title" type="text" formControlName="title" placeholder="Ex: Projet Mine Alpha - Demande 2023-10">
-            <div class="error" *ngIf="projectForm.get('title')?.touched && projectForm.get('title')?.invalid">
-                Le nom est requis.
+        <!-- Section 1: Informations Générales -->
+        <section class="form-section">
+            <h3>Informations Générales</h3>
+
+            <div class="form-group">
+                <label for="title">Nom du Projet / Dossier</label>
+                <input id="title" type="text" formControlName="title"
+                    placeholder="Ex: Projet Mine Alpha - Demande 2023-10">
+                <div class="error" *ngIf="projectForm.get('title')?.touched && projectForm.get('title')?.invalid">
+                    Le nom est requis.
+                </div>
             </div>
-        </div>
 
-        <!-- Expéditeur -->
-        <div class="form-group">
-            <label for="sender">Source de la demande</label>
-            <select id="sender" formControlName="sender">
-                <option value="" disabled>Sélectionner la source</option>
-                <option value="MINING_CO">Compagnie Minière</option>
-                <option value="MINISTRY">Ministère (MERN/MELCCFP)</option>
-                <option value="CITIZEN">Citoyen / Autre</option>
-            </select>
-        </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sender">Source de la demande</label>
+                    <select id="sender" formControlName="sender">
+                        <option value="" disabled>Sélectionner la source</option>
+                        <option value="MINING_CO">Compagnie Minière</option>
+                        <option value="MINISTRY">Ministère (MERN/MELCCFP)</option>
+                        <option value="CITIZEN">Citoyen / Autre</option>
+                    </select>
+                </div>
 
+                <div class="form-group">
+                    <label for="receivedDate">Date de réception</label>
+                    <input id="receivedDate" type="date" formControlName="receivedDate">
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Contenu -->
+        <section class="form-section">
+            <h3>Contenu de la Demande</h3>
+
+            <div class="form-group">
+                <label for="emailContent">Contenu du courriel / Description</label>
+                <textarea id="emailContent" formControlName="emailContent" rows="6"
+                    placeholder="Copiez le contenu du courriel ici..."></textarea>
+                <div class="error"
+                    *ngIf="projectForm.get('emailContent')?.touched && projectForm.get('emailContent')?.invalid">
+                    La description est requise.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="files">Documents joints (PDF, Cartes)</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="files" (change)="onFileSelected($event)" multiple
+                        accept=".pdf,.png,.jpg,.jpeg">
+                    <div class="upload-placeholder">
+                        <span class="icon">📎</span>
+                        <span>Glissez vos fichiers ici ou cliquez pour parcourir</span>
+                    </div>
+                </div>
+                <div class="file-list" *ngIf="selectedFiles.length > 0">
+                    <div class="file-item" *ngFor="let file of selectedFiles">
+                        📄 {{ file.name }} ({{ (file.size / 1024 / 1024) | number:'1.1-2' }} MB)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" routerLink="/dashboard">Annuler</button>
+            <button type="submit" class="btn-primary" [disabled]="projectForm.invalid || isSubmitting">
+                <span *ngIf="!isSubmitting">Créer le dossier</span>
+                <span *ngIf="isSubmitting">Création en cours...</span>
+            </button>
+        </div>
 
     </form>
 </div>
