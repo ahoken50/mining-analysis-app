@@ -21,4 +21,5 @@ COPY . .
 ENV PORT=8080
 
 # Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
+# Run the application (Shell form to expand variables)
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080} --workers 1
