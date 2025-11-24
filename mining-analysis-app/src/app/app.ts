@@ -11,4 +11,8 @@ import { ToastComponent } from './shared/components/toast/toast.component';
 })
 export class App {
   protected readonly title = signal('mining-analysis-app');
+
+  constructor() {
+    console.log('App component initialized');
+  }
 }
