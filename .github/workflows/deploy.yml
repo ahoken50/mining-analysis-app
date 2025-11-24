@@ -48,14 +48,14 @@ jobs:
               '    googleMapsApiKey: "' + process.env.GOOGLE_MAPS_API_KEY + '",\n' +
               '    aiServiceUrl: "https://mining-ai-service-uc.a.run.app"\n' +
               '};\n';
-          fs.writeFileSync('mining-analysis-app/src/environments/environment.prod.ts', config);
+          fs.writeFileSync('mining-analysis-app/src/environments/environment.ts', config);
           console.log('✓ Firebase config injected successfully');
           NODESCRIPT
 
       - name: Verify Config Injection
         run: |
           echo "Checking injected config..."
-          head -5 mining-analysis-app/src/environments/environment.prod.ts
+          head -5 mining-analysis-app/src/environments/environment.ts
 
       - name: Build Angular App
         run: cd mining-analysis-app && npm run build
