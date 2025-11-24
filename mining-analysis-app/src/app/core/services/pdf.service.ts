@@ -32,7 +32,7 @@ export class PdfService {
         doc.text(`Titre : ${project.metadata.title}`, 20, 45);
         doc.text(`Source : ${project.metadata.sender}`, 20, 55);
         doc.text(`Reçu le : ${new Date(project.metadata.receivedDate).toLocaleDateString()}`, 20, 65);
-        doc.text(`Statut : ${project.metadata.status}`, 120, 45);
+        doc.text(`Statut : ${project.status}`, 120, 45);
 
         // Content
         doc.setFontSize(14);
