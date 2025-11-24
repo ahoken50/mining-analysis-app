@@ -1,1 +1,149 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles & Variables */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #34495e;
+  --accent-color: #3498db;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --danger-color: #c0392b;
+  --light-bg: #ecf0f1;
+  --white: #ffffff;
+  --text-color: #2c3e50;
+  --border-radius: 8px;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* App Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    .icon {
+      font-size: 1.8rem;
+    }
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.active {
+        border-bottom: 2px solid var(--accent-color);
+      }
+    }
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .avatar {
+      background-color: var(--accent-color);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: darken(#3498db, 10%);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+/* Utilities */
+.card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  
+  &.status-approved { background-color: #d4edda; color: #155724; }
+  &.status-rejected { background-color: #f8d7da; color: #721c24; }
+  &.status-analysis_pending { background-color: #fff3cd; color: #856404; }
+  &.status-analyzed { background-color: #cce5ff; color: #004085; }
+}
