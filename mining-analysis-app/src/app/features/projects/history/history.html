@@ -1,0 +1,26 @@
+<div class="history-container">
+    <h3>Historique & Traçabilité</h3>
+
+    <div class="timeline" *ngIf="!loading; else loadingTpl">
+        <div *ngFor="let event of historyEvents" class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="header">
+                    <span class="action">{{ getActionLabel(event.action) }}</span>
+                    <span class="date">{{ event.timestamp | date:'medium' }}</span>
+                </div>
+                <div class="details">
+                    <p *ngIf="event.details">{{ event.details }}</p>
+                    <span class="user">Par : {{ event.userName || 'Système' }}</span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="historyEvents.length === 0" class="empty-state">
+            Aucun historique disponible.
+        </div>
+    </div>
+
+    <ng-template #loadingTpl>
+        <div class="loading">Chargement de l'historique...</div>
+    </ng-template>
+</div>

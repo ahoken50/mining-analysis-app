@@ -1,0 +1,123 @@
+.project-form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  h2 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #34495e;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #bdc3c7;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+
+      &:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+      }
+    }
+
+    .error {
+      color: #e74c3c;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .file-upload {
+    border: 2px dashed #bdc3c7;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 4px;
+    background: #f9f9f9;
+
+    &:hover {
+      border-color: #3498db;
+      background: #f0f8ff;
+    }
+
+    .file-list {
+      margin-top: 1rem;
+      text-align: left;
+      
+      ul {
+        list-style: none;
+        padding: 0;
+        
+        li {
+          padding: 0.25rem 0;
+          border-bottom: 1px solid #eee;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+
+      &.btn-secondary {
+        background: #ecf0f1;
+        color: #7f8c8d;
+        
+        &:hover {
+          background: #bdc3c7;
+        }
+      }
+
+      &.btn-primary {
+        background: #3498db;
+        color: white;
+
+        &:hover {
+          background: #2980b9;
+        }
+
+        &:disabled {
+          background: #95a5a6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<div class="project-form-container">
+    <h2>Nouveau Dossier ATI</h2>
+    <p class="subtitle">Saisie des informations reçues par courriel</p>
+
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+
+        <!-- Titre du Projet -->
+        <div class="form-group">
+            <label for="title">Nom du Projet / Dossier</label>
+            <input id="title" type="text" formControlName="title" placeholder="Ex: Projet Mine Alpha - Demande 2023-10">
+            <div class="error" *ngIf="projectForm.get('title')?.touched && projectForm.get('title')?.invalid">
+                Le nom est requis.
+            </div>
+        </div>
+
+        <!-- Expéditeur -->
+        <div class="form-group">
+            <label for="sender">Source de la demande</label>
+            <select id="sender" formControlName="sender">
+                <option value="" disabled>Sélectionner la source</option>
+                <option value="MINING_CO">Compagnie Minière</option>
+                <option value="MINISTRY">Ministère (MERN/MELCCFP)</option>
+                <option value="CITIZEN">Citoyen / Autre</option>
+            </select>
+        </div>
+
+        <!-- Date de Réception -->
+        <div class="form-group">
+            <label for="receivedDate">Date de réception</label>
+            <input id="receivedDate" type="date" formControlName="receivedDate">
+        </div>
+
+        <!-- Contenu du Courriel -->
+</div>
+
+<!-- Actions -->
+<div class="form-actions">
+    <button type="button" class="btn-secondary" routerLink="/dashboard">Annuler</button>
+    <button type="submit" class="btn-primary" [disabled]="projectForm.invalid">Créer le dossier</button>
+</div>
+
+</form>
+</div>

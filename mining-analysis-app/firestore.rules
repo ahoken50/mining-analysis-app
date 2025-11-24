@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Fonctions utilitaires
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function hasRole(role) {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles.hasAny([role]);
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Collection Users
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if hasRole('admin') || isOwner(userId);
+    }
+
+    // Collection Projects
+    match /projects/{projectId} {
+      // Lecture : Tout le monde authentifié peut voir (ou affiner selon besoins)
+      allow read: if isAuthenticated();
+      
+      // Création : Promoteurs et staff
+      allow create: if isAuthenticated();
+      
+      // Modification : Évaluateurs, Admins, ou le créateur (si brouillon)
+      allow update: if hasRole('admin') || hasRole('evaluator') || 
+                   (resource.data.metadata.createdBy == request.auth.uid && resource.data.metadata.status == 'DRAFT');
+                   
+      // Suppression : Admins seulement
+      allow delete: if hasRole('admin');
+    }
+    
+    // Sous-collections du projet
+    match /projects/{projectId}/comments/{commentId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow delete: if hasRole('admin') || request.auth.uid == resource.data.userId;
+    }
+  }
+}

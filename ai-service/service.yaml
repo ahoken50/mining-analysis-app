@@ -1,0 +1,25 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: mining-ai-service
+  labels:
+    cloud.googleapis.com/location: us-central1
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"  # Limit to 1 instance to control costs
+        run.googleapis.com/cpu-throttling: "true" # Allocate CPU only during request processing
+    spec:
+      containers:
+      - image: gcr.io/PROJECT_ID/mining-ai-service # Placeholder, will be replaced by CI/CD
+        resources:
+          limits:
+            memory: "512Mi" # Strict memory limit
+            cpu: "1000m"    # 1 vCPU
+        env:
+        - name: FIREBASE_STORAGE_BUCKET
+          value: "mining-analysis-app.appspot.com"
+        - name: GOOGLE_MAPS_API_KEY
+          value: "YOUR_API_KEY_HERE" # User must replace this
+        # Service Account key is NOT needed here if using Cloud Run's Service Identity with proper IAM roles

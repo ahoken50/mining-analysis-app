@@ -1,0 +1,21 @@
+<div class="comments-section">
+    <h3>Commentaires & Collaboration</h3>
+
+    <div class="comments-list">
+        <div *ngFor="let comment of comments" class="comment-item">
+            <div class="comment-header">
+                <span class="author">{{ comment.userName }}</span>
+                <span class="date">{{ comment.createdAt | date:'short' }}</span>
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+        </div>
+        <div *ngIf="comments.length === 0" class="empty-state">
+            Aucun commentaire pour le moment.
+        </div>
+    </div>
+
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="comment-form">
+        <textarea formControlName="content" placeholder="Ajouter une note ou un commentaire..." rows="3"></textarea>
+        <button type="submit" class="btn-primary" [disabled]="commentForm.invalid">Envoyer</button>
+    </form>
+</div>

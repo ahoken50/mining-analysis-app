@@ -1,0 +1,37 @@
+import { Routes } from '@angular/router';
+import { Dashboard } from './features/dashboard';
+import { Overview } from './features/dashboard/overview/overview';
+import { Statistics } from './features/dashboard/statistics/statistics';
+
+export const routes: Routes = [
+    {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+    },
+    {
+        path: 'dashboard',
+        component: Dashboard,
+        children: [
+            { path: '', redirectTo: 'overview', pathMatch: 'full' },
+            { path: 'overview', component: Overview },
+            { path: 'statistics', component: Statistics }
+        ]
+    },
+    {
+        path: 'projects/new',
+        loadComponent: () => import('./features/projects/project-form/project-form').then(m => m.ProjectForm)
+    },
+    {
+        path: 'projects/:id',
+        loadComponent: () => import('./features/projects/project-details/project-details').then(m => m.ProjectDetails)
+    },
+    {
+        path: 'login',
+        loadComponent: () => import('./features/auth/login/login').then(m => m.Login)
+    },
+    {
+        path: 'register',
+        loadComponent: () => import('./features/auth/register/register').then(m => m.Register)
+    }
+];
