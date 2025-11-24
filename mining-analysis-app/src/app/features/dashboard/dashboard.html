@@ -54,7 +54,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let project of projects">
-            <td class="primary-text">{{ project.metadata.title }}</td>
+            <td>{{ project.metadata.title }}</td>
             <td>{{ project.metadata.sender }}</td>
             <td>{{ project.metadata.receivedDate | date:'dd MMM yyyy' }}</td>
             <td>
@@ -63,11 +63,14 @@
               </span>
             </td>
             <td>
-              <a [routerLink]="['/projects', project.id]" class="btn-sm btn-outline">Voir</a>
+              <a [routerLink]="['/projects', project.id]" class="btn-outline">Voir le dossier</a>
             </td>
           </tr>
           <tr *ngIf="projects.length === 0">
-            <td colspan="5" class="empty-cell">Aucun dossier trouvé.</td>
+            <td colspan="5" class="empty-cell" style="text-align: center; padding: 2rem; color: #95a5a6;">
+              Aucun dossier trouvé. <a routerLink="/projects/new"
+                style="color: var(--accent-color); font-weight: bold;">Créer le premier ?</a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -76,7 +79,7 @@
     <ng-template #loadingTpl>
       <div class="loading-state">
         <div class="spinner"></div>
-        Chargement des données...
+        <span>Chargement des données en cours...</span>
       </div>
     </ng-template>
   </section>
