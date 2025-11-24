@@ -7,7 +7,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "dist/mining-analysis-app",
+    "public": "dist/mining-analysis-app/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
