@@ -6,84 +6,55 @@
             <div class="breadcrumbs">
                 <a routerLink="/dashboard">Dashboard</a> / <span>{{ project.metadata.title }}</span>
             </div>
-            <h1>{{ project.metadata.title }}</h1>
-            <div class="project-meta">
-                <span class="badge status-{{ project.status | lowercase }}">{{ project.status }}</span>
-                <span class="date">Reçu le {{ project.metadata.receivedDate | date }}</span>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="btn-secondary" (click)="updateStatus('REJECTED')">Refuser</button>
-            <button class="btn-primary" (click)="updateStatus('APPROVED')">Approuver</button>
-        </div>
-    </header>
+            <button [class.active]="activeTab === 'map'" (click)="setActiveTab('map')">Cartographie</button>
+            <button [class.active]="activeTab === 'documents'" (click)="setActiveTab('documents')">Documents ({{
+                project.documents?.length || 0 }})</button>
+            <button [class.active]="activeTab === 'analysis'" (click)="setActiveTab('analysis')">Analyse IA</button>
+            <button [class.active]="activeTab === 'history'" (click)="setActiveTab('history')">Historique</button>
+            </nav>
 
-    <!-- Tabs -->
-    <nav class="project-tabs">
-        <button [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">Vue d'ensemble</button>
-        <button [class.active]="activeTab === 'map'" (click)="setActiveTab('map')">Cartographie</button>
-        <button [class.active]="activeTab === 'documents'" (click)="setActiveTab('documents')">Documents ({{
-            project.documents?.length || 0 }})</button>
-        <button [class.active]="activeTab === 'analysis'" (click)="setActiveTab('analysis')">Analyse IA</button>
-        <button [class.active]="activeTab === 'history'" (click)="setActiveTab('history')">Historique</button>
-    </nav>
+            <!-- Content -->
+            <main class="tab-content">
 
-    <!-- Content -->
-    <main class="tab-content">
+                <!-- Overview Tab -->
+                <div *ngIf="activeTab === 'overview'" class="tab-pane">
+                    <section class="card">
+                        <h3>Description / Contenu du courriel</h3>
+                        <p class="email-content">{{ project.metadata.emailContent }}</p>
+                    </section>
+                </div>
 
-        <!-- Overview Tab -->
-        <div *ngIf="activeTab === 'overview'" class="tab-pane">
-            <section class="card">
-                <h3>Description / Contenu du courriel</h3>
-                <p class="email-content">{{ project.metadata.emailContent }}</p>
-            </section>
-        </div>
-
-        <!-- Map Tab -->
-        <div *ngIf="activeTab === 'map'" class="tab-pane">
-            <div class="map-container">
-                <div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
-            </div>
-        </div>
-
-        <!-- Documents Tab -->
-        <div *ngIf="activeTab === 'documents'" class="tab-pane">
-            <div class="documents-list">
-                <div *ngFor="let doc of project.documents" class="doc-item">
-                    <span class="icon">📄</span>
-                    <div class="doc-info">
-                        <a [href]="doc.url" target="_blank">{{ doc.name }}</a>
-                        <span class="size">{{ doc.type }}</span>
+                <!-- Map Tab -->
+                <div *ngIf="activeTab === 'map'" class="tab-pane">
+                    <div class="map-container">
+                        <div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
                     </div>
                 </div>
-                <div *ngIf="!project.documents?.length" class="empty-state">
-                    Aucun document joint.
-                </div>
+
+                <!-- Documents Tab -->
+                <div *ngIf="activeTab === 'documents'" class="tab-pane">
+                    <div class="documents-list">
+                        <div *ngFor="let doc of project.documents" class="doc-item">
+                            <span class="icon">📄</span>
+                            <div class="doc-info">
+                                <a [href]="doc.url" target="_blank">{{ doc.name }}</a>
+                                <span class="size">{{ doc.type }}</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!project.documents?.length" class="empty-state">
+                            Aucun document joint.
+                        </div>
+                    </div>
+
+            </main>
+
+            <!-- Collaboration Section -->
+            <app-comments [projectId]="project.id!" *ngIf="project.id"></app-comments>
+
+        </div>
+
+        <ng-template #loadingTpl>
+            <div class="loading-state">
+                Chargement du dossier...
             </div>
-        </div>
-
-        <!-- Analysis Tab -->
-        <div *ngIf="activeTab === 'analysis'" class="tab-pane">
-            <div class="analysis-placeholder">
-                <p>L'analyse automatique n'a pas encore été effectuée.</p>
-                <button class="btn-primary">Lancer l'analyse IA</button>
-            </div>
-        </div>
-
-        <!-- History Tab -->
-        <div *ngIf="activeTab === 'history'" class="tab-pane">
-            <app-project-history [projectId]="project.id!"></app-project-history>
-        </div>
-
-    </main>
-
-    <!-- Collaboration Section -->
-    <app-comments [projectId]="project.id!" *ngIf="project.id"></app-comments>
-
-</div>
-
-<ng-template #loadingTpl>
-    <div class="loading-state">
-        Chargement du dossier...
-    </div>
-</ng-template>
+        </ng-template>

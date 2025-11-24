@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FirestoreService } from '../../../core/services/firestore.service';
 import { PdfService } from '../../../core/services/pdf.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AiService } from '../../../core/services/ai.service';
 import { Project } from '../../../models/project.model';
 import * as L from 'leaflet';
 import { Comments } from '../../collaboration/comments/comments';
@@ -21,9 +22,11 @@ export class ProjectDetails implements OnInit {
   private firestoreService = inject(FirestoreService);
   private pdfService = inject(PdfService);
   private toastService = inject(ToastService);
+  private aiService = inject(AiService);
 
   project: Project | null = null;
   loading = true;
+  analyzing = false;
   activeTab: 'overview' | 'map' | 'documents' | 'analysis' | 'history' = 'overview';
 
   private map: L.Map | undefined;
@@ -46,6 +49,25 @@ export class ProjectDetails implements OnInit {
       console.error('Error loading project:', error);
     } finally {
       this.loading = false;
+    }
+  }
+
+  async analyzeProject() {
+    if (!this.project?.id) return;
+
+    this.analyzing = true;
+    try {
+      this.toastService.show('Analyse IA lancée...', 'info');
+      await this.aiService.analyzeProject(this.project.id);
+      this.toastService.show('Analyse terminée avec succès !', 'success');
+      // Reload project to get new analysis data
+      await this.loadProject(this.project.id);
+      this.activeTab = 'analysis';
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      this.toastService.show('Erreur lors de l\'analyse.', 'error');
+    } finally {
+      this.analyzing = false;
     }
   }
 
