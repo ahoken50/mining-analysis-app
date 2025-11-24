@@ -23,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: cd mining-analysis-app && npm ci
+        run: cd mining-analysis-app && npm ci --legacy-peer-deps
 
       - name: Build Angular App
         run: cd mining-analysis-app && npm run build
