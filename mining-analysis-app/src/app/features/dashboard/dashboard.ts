@@ -29,11 +29,22 @@ export class Dashboard implements OnInit {
 
   async loadProjects() {
     try {
-      this.projects = await this.firestoreService.getAll('projects');
+      const rawProjects = await this.firestoreService.getAll('projects');
+      this.projects = rawProjects.map((p: any) => {
+        const data = p;
+        // Convert Firestore Timestamps to Dates
+        if (data.metadata?.receivedDate && typeof data.metadata.receivedDate.toDate === 'function') {
+          data.metadata.receivedDate = data.metadata.receivedDate.toDate();
+        } else if (data.metadata?.receivedDate) {
+          data.metadata.receivedDate = new Date(data.metadata.receivedDate);
+        }
+        return data as Project;
+      });
+
       // Sort by date desc
       this.projects.sort((a, b) => {
-        const dateA = a.metadata.receivedDate ? new Date(a.metadata.receivedDate).getTime() : 0;
-        const dateB = b.metadata.receivedDate ? new Date(b.metadata.receivedDate).getTime() : 0;
+        const dateA = a.metadata.receivedDate ? a.metadata.receivedDate.getTime() : 0;
+        const dateB = b.metadata.receivedDate ? b.metadata.receivedDate.getTime() : 0;
         return dateB - dateA;
       });
     } catch (error) {
