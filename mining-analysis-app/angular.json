@@ -29,6 +29,25 @@
                 "glob": "**/*",
                 "input": "public"
               }
+            ],
+            "styles": [
+              "src/styles.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
@@ -49,7 +68,7 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mining-analysis-app:build:production"
+              "build Target": "mining-analysis-app:build:production"
             },
             "development": {
               "buildTarget": "mining-analysis-app:build:development"
