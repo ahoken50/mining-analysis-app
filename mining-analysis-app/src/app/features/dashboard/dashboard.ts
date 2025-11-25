@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FirestoreService } from '../../core/services/firestore.service';
 import { Project } from '../../models/project.model';
 
+import { AuthService } from '../../core/services/auth.service';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -13,12 +15,16 @@ import { Project } from '../../models/project.model';
 })
 export class Dashboard implements OnInit {
   private firestoreService = inject(FirestoreService);
+  private authService = inject(AuthService);
 
   projects: Project[] = [];
   loading = true;
 
   ngOnInit() {
-    this.loadProjects();
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.loadProjects();
+    }
   }
 
   async loadProjects() {
